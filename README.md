@@ -20,7 +20,7 @@
 ## <a name="2"></a>方法
 |方法名|描述|版本限制
 |---|---|---|
-|setRate(float rate)| 设置数据，类型：List<String>|无
+|setRate(float rate)| 设置数据，类型：float|无
 
 
 ## 使用步骤
