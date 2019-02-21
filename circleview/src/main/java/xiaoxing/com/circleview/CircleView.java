@@ -31,6 +31,12 @@ public class CircleView extends View {
     private float innerCircleWidth;//内圆的宽
     private float outterArcWidth;//外弧形的宽
 
+    //边距的处理
+    private int paddingLeft;
+    private int paddingRight;
+    private int paddingTop;
+    private int paddingBottom;
+
     private Paint mPaint;
 
     public CircleView(Context context) {
@@ -60,11 +66,17 @@ public class CircleView extends View {
             textColor = ta.getColor(R.styleable.circleView_textColor, Color.BLACK);
             textSize = ta.getDimension(R.styleable.circleView_textSize, 13);
             rate = ta.getFloat(R.styleable.circleView_rate,0);
+            if(rate > 100){
+                rate = 100;
+            }
             ta.recycle();
         }
     }
 
     public void setRate(float rate){
+        if(rate > 100){
+            rate = 100;
+        }
         old_rate = this.rate;
         this.rate = rate;
         animation();
@@ -92,13 +104,18 @@ public class CircleView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        //得到边距
+        paddingLeft = getPaddingLeft();
+        paddingRight = getPaddingRight();
+        paddingTop = getPaddingTop();
+        paddingBottom = getPaddingBottom();
         //保证整个view是正方形
         mWidth = Math.max(w,h);
         mHeight = Math.max(w,h);
         //设置内圆的宽
-        innerCircleWidth = mWidth / 2;
+        innerCircleWidth =( mWidth - paddingLeft - paddingRight )/ 2;
         //设置外弧的宽
-        outterArcWidth = mWidth / 10;
+        outterArcWidth = (mWidth - paddingTop - paddingBottom )/ 10;
         //重新绘制
         postInvalidate();
     }
@@ -112,20 +129,20 @@ public class CircleView extends View {
         mPaint.setTextAlign(Paint.Align.CENTER);
         //画内圆
         mPaint.setColor(circleColor);
-        canvas.drawCircle(mWidth / 2,mHeight / 2,innerCircleWidth / 2,mPaint);
+        canvas.drawCircle(innerCircleWidth + paddingLeft,innerCircleWidth + paddingTop,innerCircleWidth / 2,mPaint);
         //画文字
         mPaint.setColor(textColor);
         Paint.FontMetrics fontMetrics=new Paint.FontMetrics();
         mPaint.getFontMetrics(fontMetrics);
         float offset=(fontMetrics.descent+fontMetrics.ascent)/2;
-        canvas.drawText(rate + "%",mWidth / 2,mHeight / 2 - offset ,mPaint);
+        canvas.drawText(rate + "%",innerCircleWidth + paddingLeft,innerCircleWidth - offset + paddingTop,mPaint);
         //画弧
         mPaint.setColor(arcColor);
         mPaint.setStrokeWidth(outterArcWidth);
         mPaint.setStyle(Paint.Style.STROKE);
         //计算弧的弧度
         float sweapAngle = 360 * rate / 100;
-        RectF rect = new RectF(0 + outterArcWidth,0 + outterArcWidth ,mWidth - outterArcWidth ,mHeight - outterArcWidth);
+        RectF rect = new RectF(0 + paddingLeft + outterArcWidth ,0 + paddingTop + outterArcWidth,mWidth - paddingRight - outterArcWidth,mHeight - paddingBottom - outterArcWidth);
         canvas.drawArc(rect,-90,sweapAngle,false,mPaint);
     }
 

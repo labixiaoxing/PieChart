@@ -2,6 +2,7 @@ package visa.gezi.com.circleview;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,7 +12,7 @@ import xiaoxing.com.circleview.CircleView;
 public class MainActivity extends AppCompatActivity {
 
 
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                circleView.setRate( Float.parseFloat(editText.getText().toString()));
+                if( !TextUtils.isEmpty(editText.getText().toString())){
+                    circleView.setRate( Float.parseFloat(editText.getText().toString()));
+                }
             }
         });
     }

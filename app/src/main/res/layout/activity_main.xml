@@ -16,7 +16,11 @@
         app:rate="90"
         android:background="#000000"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="100dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +35,8 @@
         <EditText
             android:id="@+id/edittext"
             android:layout_width="200dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:inputType="numberDecimal"/>
     </LinearLayout>
 
 
